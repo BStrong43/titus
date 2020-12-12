@@ -1,0 +1,32 @@
+{
+    "events":[
+         { 
+             "title":"Christmas Party",
+             "month": 12,
+             "day": 23,  
+             "time": 18,
+             "timezone": "America/Chicago"
+         },
+         {
+             "title":"Football Game",
+             "month": 12,
+             "day": 23,  
+             "time": 14,
+             "timezone": "America/Chicago"
+         }, 
+         { 
+            "title":"Christmas Party",
+            "month": 12,
+            "day": 23,  
+            "time": 18,
+            "timezone": "America/Chicago"
+        }, 
+        { 
+           "title":"Christmas Party",
+           "month": 12,
+           "day": 23,  
+           "time": 18,
+           "timezone": "America/Chicago"
+       }
+    ]
+  }

@@ -1,0 +1,35 @@
+5
+Christmas Party
+Boston, MA
+12
+2020
+23
+18
+120
+Family Golf
+Essex Country Club
+12
+2020
+13
+11
+180
+C's Birthday Party
+Wenham, MA
+12
+2020
+15
+12
+120
+Dr. Appointment
+1
+2021
+12
+11.5
+0.5
+name
+place
+MM
+YYYY
+DD
+time in 24h clock
+duration
