@@ -1,14 +1,16 @@
-#include "titus_tools.h"
+#include "../include/titus_tools.h"
 //#include <unistd.h>
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int main()
 {
     //Option Parsing in order to do the thing
 
     //Do the thing - finally
-    sendCalendar();
+    sendCalendar(); 
+
+    cout << "\n";
 
     return EXIT_SUCCESS;
 }

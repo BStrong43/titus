@@ -1,22 +1,22 @@
-#include "titus_tools.h"
+#include "../include/titus_tools.h"
 
 void sendCalendar(std::string fileName)
 {
-    //Get date
+    //Get date -Confirmed works
     dateStruct curDate = whatsTheDate();
-    std::cout<< "\nDate Created";
+    //std::cout<< "Date Created (dmy): \n" << curDate.day << " " << curDate.month << " " << curDate.year << "\n";
 
     //Get events
     std::vector<eventDet> events = fileToString(fileName);
-    std::cout<< "\nEvent Vector Created";
-    
+    //std::cout<< "\nEvent Vector Created";
+/*
     //Filter out events longer than a week away
-    events = purgeEvents(events);
+    //events = purgeEvents(events);
     std::cout<<"\nEvents Purged";
-
+/*
     std::stringstream outMsg = formatMsg(events);
     std::cout<<"\nmessage formatted";
-
+/*
     std::ofstream outFile;
     std::string outName = "OUTPUT" + fileName;
 
@@ -25,11 +25,14 @@ void sendCalendar(std::string fileName)
     {
         outFile << outMsg.str();
         std::cout<< "\nCalendar Sent";
+        
     }
     else
     {
         std::cout << "File '" << outName << "' could not be opened\n";
     }
+    outFile.close();
+    */
 }
 
 std::stringstream formatMsg(std::vector<eventDet> eventList)
@@ -65,11 +68,21 @@ std::vector<eventDet> fileToString(std::string fileName)
     cal.open(fileName);
 
     //Check if bad
-    if(!cal.bad())
+    if(cal.is_open())
     {//keep going
+        
+        int eventNum;
+        cal >> eventNum;
+        std::cout << "\n" << eventNum << "\n";
+        if(cal.bad())
+        { //bad read safety measure
+            eventNum = 0;
+            std::cout <<"\nBAD READ SOMETHING BIG WRONG\n";
+        }
+            
 
         //Calendar parsing & event data compilation
-        while(!cal.eof())
+        for(int i = 0; i < eventNum;i++)
         {
             //Gives default values in case line from file cant be read
             eventDet newEvent = {};
@@ -81,7 +94,14 @@ std::vector<eventDet> fileToString(std::string fileName)
             cal >> newEvent.year;//year
             cal >> newEvent.day;//day
             cal >> newEvent.time;//time
-
+            /*
+            std::cout << "\n" << newEvent.title;
+            std::cout << "\n" << newEvent.location;
+            std::cout << "\n" << newEvent.month;
+            std::cout << "\n" << newEvent.year;
+            std::cout << "\n" << newEvent.day;
+            std::cout << "\n" << newEvent.time;
+            */
             events.push_back(newEvent);
         }
     }
