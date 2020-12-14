@@ -64,15 +64,15 @@ std::vector<eventDet> fileToString(std::string fileName)
     std::vector<eventDet> events = {}; //Variable to be returned
     
     //Create and open stream
-    std::ifstream cal;
+    std::ifstream cal, num;
     cal.open(fileName);
-
+    num.open("NUMcalendar.txt");
     //Check if bad
     if(cal.is_open())
     {//keep going
         
         int eventNum;
-        cal >> eventNum;
+        num >> eventNum;
         std::cout << "\n" << eventNum << "\n";
         if(cal.bad())
         { //bad read safety measure
@@ -90,18 +90,18 @@ std::vector<eventDet> fileToString(std::string fileName)
             //Extract values from file
             getline(cal, newEvent.title);
             getline(cal, newEvent.location);
-            cal >> newEvent.month;//month
-            cal >> newEvent.year;//year
-            cal >> newEvent.day;//day
-            cal >> newEvent.time;//time
-            /*
+            num >> newEvent.month;//month
+            num >> newEvent.year;//year
+            num >> newEvent.day;//day
+            num >> newEvent.time;//time
+            ///*
             std::cout << "\n" << newEvent.title;
-            std::cout << "\n" << newEvent.location;
-            std::cout << "\n" << newEvent.month;
-            std::cout << "\n" << newEvent.year;
-            std::cout << "\n" << newEvent.day;
-            std::cout << "\n" << newEvent.time;
-            */
+            //std::cout << "\n" << newEvent.location;
+            //std::cout << "\n" << newEvent.month;
+            //std::cout << "\n" << newEvent.year;
+            //std::cout << "\n" << newEvent.day;
+            //std::cout << "\n" << newEvent.time;
+            //*/
             events.push_back(newEvent);
         }
     }
@@ -110,8 +110,8 @@ std::vector<eventDet> fileToString(std::string fileName)
         std::cout << "File '" << fileName << "' could not be opened\n";
     }
 
-    
-
+    cal.close();
+    num.close();
     return events;
 }
 
