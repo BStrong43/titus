@@ -23,10 +23,10 @@ struct dateStruct
 struct eventDet/*ails*/
 {
     //Date stored as ints - will be converted to proper strings for output file
-    int day = 0;
-    int month = 0;
-    int year = 0;
-    int time = 0;
+    int day;
+    int month;
+    int year;
+    int time;
     std::string title = "";
     std::string location = "";
 };

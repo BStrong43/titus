@@ -66,23 +66,22 @@ std::vector<eventDet> fileToString(std::string fileName)
     //Create and open stream
     std::ifstream cal, num;
     cal.open(fileName);
-    num.open("NUMcalendar.txt");
     //Check if bad
     if(cal.is_open())
     {//keep going
         
-        int eventNum;
+        /*int eventNum;
         num >> eventNum;
         std::cout << "\n" << eventNum << "\n";
         if(cal.bad())
         { //bad read safety measure
             eventNum = 0;
             std::cout <<"\nBAD READ SOMETHING BIG WRONG\n";
-        }
+        }*/
             
 
         //Calendar parsing & event data compilation
-        for(int i = 0; i < eventNum;i++)
+        for(int i = 0; i < 5;i++)
         {
             //Gives default values in case line from file cant be read
             eventDet newEvent = {};
@@ -96,11 +95,11 @@ std::vector<eventDet> fileToString(std::string fileName)
             num >> newEvent.time;//time
             ///*
             std::cout << "\n" << newEvent.title;
-            //std::cout << "\n" << newEvent.location;
-            //std::cout << "\n" << newEvent.month;
-            //std::cout << "\n" << newEvent.year;
-            //std::cout << "\n" << newEvent.day;
-            //std::cout << "\n" << newEvent.time;
+            std::cout << "\n" << newEvent.location;
+            std::cout << "\n" << newEvent.month;
+            std::cout << "\n" << newEvent.year;
+            std::cout << "\n" << newEvent.day;
+            std::cout << "\n" << newEvent.time;
             //*/
             events.push_back(newEvent);
         }
