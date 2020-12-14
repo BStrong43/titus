@@ -8,19 +8,17 @@
 */
 #include "../include/titus_tools.h"
 
-void sendCalendar(std::string fileName)
+void sendCalendar(int daysOut, std::string outName, std::string fileName)
 {
     //Get events
     std::vector<eventDet> events = fileToString(fileName);
 
     //Filter out events longer than a week away
-    events = purgeEvents(events);
+    events = purgeEvents(daysOut, events);
 
     std::stringstream outMsg = formatMsg(events);
-    std::cout<<"\nmessage formatted";
 
     std::ofstream outFile;
-    std::string outName = "OUTPUT" + fileName;
 
     outFile.open(outName);
     if(!outFile.bad())
@@ -39,7 +37,7 @@ std::stringstream formatMsg(std::vector<eventDet> eventList)
 {
     std::stringstream outText;
     //Add header to message
-    outText << "Good day Ben\nHere is your schedule for the week\n_____\n";
+    outText << "Good day Ben\nHere is your schedule\n_____\n";
 
     for (int i = 0; i < eventList.size(); i++)
     {
@@ -115,7 +113,7 @@ std::vector<eventDet> fileToString(std::string fileName)
     return events;
 }
 
-std::vector<eventDet> purgeEvents(std::vector<eventDet> allEvents)
+std::vector<eventDet> purgeEvents(int daysOut, std::vector<eventDet> allEvents)
 {
 
     std::vector<eventDet> eventNotifications = {};
@@ -123,17 +121,13 @@ std::vector<eventDet> purgeEvents(std::vector<eventDet> allEvents)
     //Get date -Confirmed works
     dateStruct curDate = whatsTheDate();
 
-    //
     int daysSinceZero = ((curDate.month - 1) * 30) + curDate.day;
 
     for(int i=0; i<allEvents.size(); i++)
     {
         if(allEvents[i].year < curDate.year)
-            continue;
+            continue; //Purge all events from previous years
 
-        
-        //must do a different calculation for event dates to ensure that events next month or year (yet still 
-        //within a week from the present) are not purged
         int eventDaySinceZero = ((allEvents[i].month-1) * 30) + allEvents[i].day;
         
         //Get year difference in days and add it
@@ -141,7 +135,7 @@ std::vector<eventDet> purgeEvents(std::vector<eventDet> allEvents)
 
         int dayDelta = eventDaySinceZero - daysSinceZero;
 
-        if(dayDelta >=0 && dayDelta <=7)
+        if(dayDelta >=0 && dayDelta <=daysOut)
         {
             eventNotifications.push_back(allEvents[i]);
         }

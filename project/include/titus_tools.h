@@ -42,10 +42,10 @@ struct eventDet/*ails*/
     std::string location = "";
 };
 
-void sendCalendar(std::string filename = "calendar.txt");
+void sendCalendar(int daysOut, std::string outName, std::string inFile = "calendar.txt");
 std::stringstream formatMsg(std::vector<eventDet> eventList);
 std::vector<eventDet> fileToString(std::string fileName = "calendar.txt");
-std::vector<eventDet> purgeEvents(std::vector<eventDet> allEvents);
+std::vector<eventDet> purgeEvents(int daysOut, std::vector<eventDet> allEvents);
 
 // Simple Utility Functions
 std::string monthFromNum(int month);

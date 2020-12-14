@@ -9,7 +9,7 @@ Family Golf
 Essex Country Club
 12
 2020
-13
+16
 11
 C's Birthday Party
 Wenham, MA
@@ -27,5 +27,11 @@ Event to be purged
 No man's Land
 3
 2021
+2
+15
+Event that happened last year with a date in the current 
+month to show that my date parsing is accurate
+12
+2019
 2
 15
