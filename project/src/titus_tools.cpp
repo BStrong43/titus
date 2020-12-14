@@ -1,22 +1,24 @@
+/**
+* @file titus_tools.cpp
+*
+* @author Ben Strong
+* @assignment Final Project
+* @date 12/13/2020
+* 
+*/
 #include "../include/titus_tools.h"
 
 void sendCalendar(std::string fileName)
 {
-    //Get date -Confirmed works
-    dateStruct curDate = whatsTheDate();
-    //std::cout<< "Date Created (dmy): \n" << curDate.day << " " << curDate.month << " " << curDate.year << "\n";
-
     //Get events
     std::vector<eventDet> events = fileToString(fileName);
-    //std::cout<< "\nEvent Vector Created";
-/*
+
     //Filter out events longer than a week away
-    //events = purgeEvents(events);
-    std::cout<<"\nEvents Purged";
-/*
+    events = purgeEvents(events);
+
     std::stringstream outMsg = formatMsg(events);
     std::cout<<"\nmessage formatted";
-/*
+
     std::ofstream outFile;
     std::string outName = "OUTPUT" + fileName;
 
@@ -24,29 +26,26 @@ void sendCalendar(std::string fileName)
     if(!outFile.bad())
     {
         outFile << outMsg.str();
-        std::cout<< "\nCalendar Sent";
-        
     }
     else
     {
         std::cout << "File '" << outName << "' could not be opened\n";
     }
     outFile.close();
-    */
+    
 }
 
 std::stringstream formatMsg(std::vector<eventDet> eventList)
 {
     std::stringstream outText;
     //Add header to message
-    outText << "Good day Ben\nHere is your schedule for the week";
+    outText << "Good day Ben\nHere is your schedule for the week\n_____\n";
 
     for (int i = 0; i < eventList.size(); i++)
     {
         //Create stream
         std::stringstream nextLine;
         //Write event data to stream
-        nextLine << "Event #" + (i+1);
         nextLine << eventList[i].title << "\n";
         nextLine << dateToString(eventList[i].day, eventList[i].month, eventList[i].year, eventList[i].time) << "\n";
         nextLine << eventList[i].location << "\n";
@@ -54,7 +53,7 @@ std::stringstream formatMsg(std::vector<eventDet> eventList)
         outText << nextLine.str();
     }
 
-    outText << "\nBest Regards\n-Titus/n";
+    outText << "\nBest Regards\n-Titus";
 
     return outText;
 }
@@ -64,43 +63,45 @@ std::vector<eventDet> fileToString(std::string fileName)
     std::vector<eventDet> events = {}; //Variable to be returned
     
     //Create and open stream
-    std::ifstream cal, num;
+    std::ifstream cal;
     cal.open(fileName);
     //Check if bad
     if(cal.is_open())
     {//keep going
         
-        /*int eventNum;
-        num >> eventNum;
-        std::cout << "\n" << eventNum << "\n";
+        int eventNum;
+        std::string eventNumStr;
+        getline(cal, eventNumStr);
+
         if(cal.bad())
         { //bad read safety measure
             eventNum = 0;
             std::cout <<"\nBAD READ SOMETHING BIG WRONG\n";
-        }*/
-            
+        }
+        else
+        {//Everything is ok
+            eventNum = atoi(eventNumStr.c_str());
+        }
 
         //Calendar parsing & event data compilation
-        for(int i = 0; i < 5;i++)
+        for(int i = 0; i < eventNum;i++)
         {
             //Gives default values in case line from file cant be read
             eventDet newEvent = {};
-
+            std::string d,m,y,t;
             //Extract values from file
             getline(cal, newEvent.title);
             getline(cal, newEvent.location);
-            num >> newEvent.month;//month
-            num >> newEvent.year;//year
-            num >> newEvent.day;//day
-            num >> newEvent.time;//time
-            ///*
-            std::cout << "\n" << newEvent.title;
-            std::cout << "\n" << newEvent.location;
-            std::cout << "\n" << newEvent.month;
-            std::cout << "\n" << newEvent.year;
-            std::cout << "\n" << newEvent.day;
-            std::cout << "\n" << newEvent.time;
-            //*/
+            getline(cal, m);
+            getline(cal, y);
+            getline(cal, d);
+            getline(cal, t);
+
+            newEvent.month = atoi(m.c_str());
+            newEvent.year = atoi(y.c_str());
+            newEvent.day = atoi(d.c_str());
+            newEvent.time = atoi(t.c_str());
+            
             events.push_back(newEvent);
         }
     }
@@ -110,7 +111,7 @@ std::vector<eventDet> fileToString(std::string fileName)
     }
 
     cal.close();
-    num.close();
+    
     return events;
 }
 
@@ -119,12 +120,40 @@ std::vector<eventDet> purgeEvents(std::vector<eventDet> allEvents)
 
     std::vector<eventDet> eventNotifications = {};
 
+    //Get date -Confirmed works
+    dateStruct curDate = whatsTheDate();
+
+    //
+    int daysSinceZero = ((curDate.month - 1) * 30) + curDate.day;
+
+    for(int i=0; i<allEvents.size(); i++)
+    {
+        if(allEvents[i].year < curDate.year)
+            continue;
+
+        
+        //must do a different calculation for event dates to ensure that events next month or year (yet still 
+        //within a week from the present) are not purged
+        int eventDaySinceZero = ((allEvents[i].month-1) * 30) + allEvents[i].day;
+        
+        //Get year difference in days and add it
+        eventDaySinceZero += (365 * (allEvents[i].year - curDate.year));
+
+        int dayDelta = eventDaySinceZero - daysSinceZero;
+
+        if(dayDelta >=0 && dayDelta <=7)
+        {
+            eventNotifications.push_back(allEvents[i]);
+        }
+    }
+
+    //Remember to replace this with eventNotifications
     return eventNotifications;
 }
 
 dateStruct whatsTheDate()
 {
-    //Next 2 lines from https://www.tutorialspoint.com/cplusplus/cpp_date_time.htm
+    //@credit next 2 lines from https://www.tutorialspoint.com/cplusplus/cpp_date_time.htm
     time_t t = time(0);
     tm *date = localtime(&t);
 

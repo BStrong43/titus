@@ -1,3 +1,14 @@
+#ifndef TITUS_TOOLS
+#define TITUS_TOOLS
+
+/**
+* @file titus_tools.h
+*
+* @author Ben Strong
+* @assignment Final Project
+* @date 12/13/2020
+* 
+*/
 
 //Strings for calendar data storage
 #include <string>
@@ -40,3 +51,5 @@ std::vector<eventDet> purgeEvents(std::vector<eventDet> allEvents);
 std::string monthFromNum(int month);
 std::string dateToString(int d, int m, int y, int t);
 dateStruct whatsTheDate();
+
+#endif

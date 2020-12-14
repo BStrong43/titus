@@ -1,5 +1,13 @@
+/**
+* @file titus_main.cpp
+*
+* @author Ben Strong
+* @assignment Final Project
+* @date 12/13/2020
+* @credits
+* 
+*/
 #include "../include/titus_tools.h"
-//#include <unistd.h>
 
 using namespace std;
 
